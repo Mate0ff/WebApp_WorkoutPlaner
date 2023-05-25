@@ -24,7 +24,6 @@ namespace Kucharz_Liberacki_Kopanko.Controllers
             // Pobranie wszystkich ćwiczeń z bazy danych
             List<Exercise> exercises = _db.Exercise.ToList();
 
-            // Tworzenie instancji widoku PlanCreateViewModel
             var viewModel = new PlanCreateViewModel
             {
                 Users = users,
@@ -72,14 +71,13 @@ namespace Kucharz_Liberacki_Kopanko.Controllers
         public ActionResult Edit(int id)
         {
             // Pobierz plan o podanym id z bazy danych
-            var plan = _db.Plan.Find(id);
+            var plan = _db.Plan.Include(p => p.Plan_Exes).SingleOrDefault(p => p.PlanId == id);
 
             if (plan == null)
             {
                 return HttpNotFound();
             }
 
-            // Przygotuj dane dla widoku edycji
             var viewModel = new PlanEditViewModel
             {
                 PlanId = plan.PlanId,
@@ -99,7 +97,7 @@ namespace Kucharz_Liberacki_Kopanko.Controllers
             if (ModelState.IsValid)
             {
                 // Pobierz plan o podanym id z bazy danych
-                var plan = _db.Plan.Find(viewModel.PlanId);
+                var plan = _db.Plan.Include(p => p.Plan_Exes).SingleOrDefault(p => p.PlanId == viewModel.PlanId);
 
                 if (plan == null)
                 {
@@ -117,19 +115,19 @@ namespace Kucharz_Liberacki_Kopanko.Controllers
                 var planExes = selectedExercises.Select(exercise => new Plan_Ex { PlanId = plan.PlanId, ExerciseId = exercise.ExerciseId }).ToList();
                 plan.Plan_Exes.AddRange(planExes);
 
-
-                // Zapisz zmiany w bazie danych
+                // Zapisz zmiany
                 _db.SaveChanges();
 
                 return RedirectToAction("ViewAll");
             }
 
-            // Jeżeli dane w formularzu są niepoprawne, pobierz listy użytkowników i ćwiczeń
+
             viewModel.Users = _db.User.ToList();
             viewModel.Exercises = _db.Exercise.ToList();
 
             return View(viewModel);
         }
+
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -162,5 +160,20 @@ namespace Kucharz_Liberacki_Kopanko.Controllers
 
             return RedirectToAction("ViewAll");
         }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            // Pobierz plan o podanym id z bazy danych
+            var plan = _db.Plan.Include(p => p.PlannedList).SingleOrDefault(p => p.PlanId == id);
+
+            if (plan == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(plan);
+        }
+
     }
 }

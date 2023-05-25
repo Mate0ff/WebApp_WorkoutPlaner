@@ -11,115 +11,108 @@ namespace Kucharz_Liberacki_Kopanko.Controllers
 {
     public class ExerciseController : Controller
     {
-        // GET: Exercise
-        
+        private readonly DatabaseContext _db;
+
+        public ExerciseController()
+        {
+            _db = new DatabaseContext();
+        }
+
+
         [HttpGet]
-        public ActionResult Create() 
-        {       
+        public ActionResult Create()
+        {
             return View(new Exercise());
         }
-        
-        
+
         [HttpPost]
-        public ActionResult Create(Exercise exercise, ExDetails details)
+        public ActionResult Create(Exercise exercise)
         {
-            if(ModelState.IsValid) 
-            { 
-                using(DatabaseContext db = new DatabaseContext()) 
-                { 
-                    db.Exercise.Add(exercise);
-                    db.ExDetails.Add(details);
-                    db.SaveChanges();
-                }
+            if (ModelState.IsValid)
+            {
+
+                var exDetails = new ExDetails
+                {
+                    Exercise = exercise,
+                    Description = exercise.ExDetails.Description
+                };
+
+                exercise.ExDetails = exDetails;
+
+                _db.Exercise.Add(exercise);
+                _db.SaveChanges();
+
                 return RedirectToAction("ViewAll");
             }
 
-            return View(new Exercise());
+            return View(exercise);
         }
 
         [HttpGet]
-        public ActionResult ViewAll() 
-        { 
-            List<Exercise> list;
-            using (DatabaseContext db = new DatabaseContext()) 
-            { 
-                list = db.Exercise.ToList();
-            }
+        public ActionResult ViewAll()
+        {
+            List<Exercise> list = _db.Exercise.ToList();
+
             return View(list);
         }
 
         [HttpGet]
         public ActionResult View(int id)
         {
-            Exercise obj;
-            using (DatabaseContext db = new DatabaseContext())
-            {
-                obj = db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
-            }
+            Exercise obj = _db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
 
             return View(obj);
         }
 
         [HttpGet]
-        public ActionResult Edit(int id) 
+        public ActionResult Edit(int id)
         {
-            Exercise obj;
-            using (DatabaseContext db = new DatabaseContext())
-            {
-                obj = db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
-            }
+            Exercise obj = _db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
+
             return View(obj);
         }
 
         [HttpPost]
-        public ActionResult Edit(Exercise ex)
+        public ActionResult Edit(Exercise exercise)
         {
+            if (ModelState.IsValid)
+            {
+                var existingExercise = _db.Exercise.Include(e => e.ExDetails).FirstOrDefault(e => e.ExerciseId == exercise.ExerciseId);
 
-            if (ModelState.IsValid) 
-            {
-                return View(ex);
+                existingExercise.Category = exercise.Category;
+                existingExercise.Name = exercise.Name;
+                existingExercise.Series = exercise.Series;
+                existingExercise.Repetitions = exercise.Repetitions;
+                existingExercise.ExDetails.Description = exercise.ExDetails.Description;
+
+                _db.Entry(existingExercise).State = EntityState.Modified;
+                _db.SaveChanges();
+
+                return RedirectToAction("ViewAll");
             }
-            using (DatabaseContext db = new DatabaseContext())
-            {
-                db.Entry(ex).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-            return RedirectToAction("ViewAll");
+
+            return View(exercise);
         }
 
         [HttpGet]
-        public ActionResult Delete(int id) 
+        public ActionResult Delete(int id)
         {
-            Exercise obj;
+            Exercise obj = _db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
 
-            using (DatabaseContext db = new DatabaseContext())
-            {
-                obj = db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
-
-            }
             return View(obj);
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int? id)
         {
-            Exercise obj;
-            ExDetails exDetails;
-            using (DatabaseContext db = new DatabaseContext())
-            {
-                obj = db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
-                exDetails = db.ExDetails.FirstOrDefault(o => o.ExDetailsId == id);
-                db.Exercise.Remove(obj);
-                db.ExDetails.Remove(exDetails);
-                db.SaveChanges();
-            }
+            Exercise obj = _db.Exercise.FirstOrDefault(o => o.ExerciseId == id);
+            ExDetails exDetails = _db.ExDetails.FirstOrDefault(o => o.Exercise.ExerciseId == id);
+
+            _db.Exercise.Remove(obj);
+            _db.ExDetails.Remove(exDetails);
+            _db.SaveChanges();
+
             return RedirectToAction("ViewAll");
         }
-
-
-
-
     }
 }
-
-

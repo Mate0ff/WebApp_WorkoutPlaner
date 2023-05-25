@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using Kucharz_Liberacki_Kopanko.Models.DbModels;
+
 
 namespace Kucharz_Liberacki_Kopanko.Models
 {

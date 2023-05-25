@@ -13,7 +13,7 @@
             <tr>
                 <th>Plan ID</th>
                 <th>User</th>
-                <th>Exercises</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -25,24 +25,7 @@
                     <td>@plan.PlanId</td>
                     <td>@($"{plan.Users.Name} {plan.Users.Surname}")</td>
                     <td>
-                        <div id="carousel-@plan.PlanId" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                @foreach (var exercise in plan.PlannedList)
-                                {
-                                    <div class="carousel-item @(exercise == plan.PlannedList.First() ? "active" : "")">
-                                        <p>@exercise.Name.ToString()</p>
-                                    </div>
-                                }
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@plan.PlanId" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carousel-@plan.PlanId" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
+                        @Html.ActionLink("Details", "Details", "Plan", new { id = plan.PlanId }, new { @class = "btn btn-primary" })
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", "Plan", new { id = plan.PlanId }, new { @class = "btn btn-primary" })

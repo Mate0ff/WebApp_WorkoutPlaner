@@ -213,6 +213,7 @@
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\ViewAll.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\Plan\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

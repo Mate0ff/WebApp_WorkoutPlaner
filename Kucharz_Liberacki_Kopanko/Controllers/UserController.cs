@@ -17,24 +17,25 @@ public class UserController : Controller
     [HttpGet]
     public ActionResult Create()
     {
-        return View(new User());
+        var exercise = new Exercise();
+        exercise.ExDetails = new ExDetails();
+        return View(exercise);
     }
 
     [HttpPost]
-    public ActionResult Create(User user)
+    public ActionResult Create(Exercise exercise)
     {
         if (ModelState.IsValid)
         {
-            // Dodaj nowego użytkownika do bazy danych
-            _db.User.Add(user);
+
+            _db.Exercise.Add(exercise);
             _db.SaveChanges();
 
-            // Przekieruj do widoku sukcesu lub innej akcji
             return RedirectToAction("ViewAll");
         }
 
-        // Jeśli walidacja modelu nie powiodła się, zwróć widok Create z błędami walidacji
-        return View(user);
+
+        return View(exercise);
     }
 
     public ActionResult ViewAll()
@@ -81,21 +82,16 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public ActionResult Edit(User ex)
+    public ActionResult Edit(User user)
     {
-
         if (ModelState.IsValid)
         {
-            return View(ex);
+            _db.Entry(user).State = EntityState.Modified;
+            _db.SaveChanges();
+            return RedirectToAction("ViewAll");
         }
-        using (DatabaseContext db = new DatabaseContext())
-        {
-            db.Entry(ex).State = EntityState.Modified;
-            db.SaveChanges();
-        }
-        return RedirectToAction("ViewAll");
+        return View(user);
     }
-
 
 
 }

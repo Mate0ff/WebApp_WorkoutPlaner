@@ -27,6 +27,12 @@ namespace Kucharz_Liberacki_Kopanko
                 name: "Exercises",
                 url: "exercises",
                 defaults: new { controller = "Home", action = "Cwiczenia" });
+
+            routes.MapRoute(
+            name: "EditPlan",
+            url: "Plan/Edit/{id}",
+            defaults: new { controller = "Plan", action = "Edit" });
+    
         }
     }
 }

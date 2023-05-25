@@ -14,7 +14,6 @@
         <dt>
             @Html.DisplayNameFor(model => model.Category)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Category)
         </dd>
@@ -22,7 +21,6 @@
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
@@ -30,7 +28,6 @@
         <dt>
             @Html.DisplayNameFor(model => model.Series)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Series)
         </dd>
@@ -38,11 +35,16 @@
         <dt>
             @Html.DisplayNameFor(model => model.Repetitions)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Repetitions)
         </dd>
 
+        <dt>
+            Description
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExDetails.Description)
+        </dd>
     </dl>
 </div>
 <p>
