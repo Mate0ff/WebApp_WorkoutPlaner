@@ -1,4 +1,4 @@
-# ProjektTi
+# Workout planner
 Web Application for creating workout plan
 
 Me and 2 friends of mine made this application as a project for our classes.
