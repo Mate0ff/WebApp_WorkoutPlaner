@@ -1,8 +1,17 @@
 # Workout planner
-Web Application for creating workout plan
 
-Me and 2 friends of mine made this application as a project for our classes.
+Welcome to our Simple WebApp for Creating Workout Plans, a .NET-based application designed to help users create personalized workout plans. This project was developed as a part of our class assignment by me and two of my friends.
 
-I made views, models and controllers alone and database we made together. They made css part of views and word documents as kind of instruction how to use the app.
+## Features
 
-App with instruction can be downloaded form here https://drive.google.com/file/d/1PsDhu4RnYXM_oxJNMyxHnjIivcR0sKt2/view?fbclid=IwAR1T6A-4nxz6kFJJIemyt7AQkrKIhh2L9fUmliy28JbpdCUlsJgTFK-0YDM 
+- User-friendly interface for creating and managing workout plans.
+- Models and controllers crafted for an intuitive user experience.
+- A collaborative database schema designed for performance and scalability.
+
+## My contribution
+
+I was responsible for views, models and controllers.  
+Database was made together. 
+
+If there would be a problem with cloning repository, app can also be accessed here 
+https://drive.google.com/file/d/1PsDhu4RnYXM_oxJNMyxHnjIivcR0sKt2/view?fbclid=IwAR1T6A-4nxz6kFJJIemyt7AQkrKIhh2L9fUmliy28JbpdCUlsJgTFK-0YDM 
